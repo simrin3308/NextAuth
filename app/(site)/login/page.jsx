@@ -11,7 +11,22 @@ export default function Login() {
     password: "",
   });
 
-  const loginUser = async (e) => {};
+  const loginUser = async (e) => {
+    e.preventDefault();
+    signIn("credentials", {
+      ...data,
+      redirect: false,
+      // We need to set the redirect false because this will redirect us to the build in signin page.
+    }).then((callback) => {
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+
+      if (callback?.ok && !callback?.error) {
+        toast.success("Logged in successfully!");
+      }
+    });
+  };
 
   return (
     <>

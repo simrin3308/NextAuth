@@ -280,7 +280,7 @@ At this point if we click on register in front end page, it must say "user regis
 
 we need to same as we did in register page. We will be having a form with submit function. This submit function then can be used to login the user. We need to use the value and useState as we used above but here we need only 2 values. Email and password.
 
-We will not use axios for login because next auth provides us SIGNIN function which can be used to login the user.
+We will not use axios for login because next auth provides us SIGNIN function which can be used to login the user. We need to add the signin function on onClick
 
 # 9. Login backend connect.
 
@@ -369,4 +369,37 @@ export const authOptions = {
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
+```
+
+# 10. Toast notifications
+
+npm i react-hot-toast
+app/context/ToasterContext.jsx
+* Create another file in Context
+
+```js
+'use client'
+
+import { Toaster } from 'react-hot-toast'
+
+const ToasterContext = () => {
+    return (
+        <div>
+            <Toaster />
+        </div>
+    )
+}
+
+export default ToasterContext;
+```
+
+Provide in layout file
+```js
+ <html lang="en">
+      <body className={inter.className}>
+        <Provider>
+          <ToasterContext />
+          {children}
+        </Provider></body>
+    </html>
 ```
