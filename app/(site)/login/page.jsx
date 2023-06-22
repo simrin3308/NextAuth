@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { signIn, useSession } from "next-auth/react";
 
 import { useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 export default function Login() {
   const [data, setData] = useState({
@@ -17,11 +18,14 @@ export default function Login() {
       ...data,
       redirect: false,
       // We need to set the redirect false because this will redirect us to the build in signin page.
+
+      // Whenever we use signin function with next auth, it gives us a callback function
     }).then((callback) => {
       if (callback?.error) {
         toast.error(callback.error);
       }
 
+      // callback.error is whatever we put inside our backend code or checks we did
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in successfully!");
       }
