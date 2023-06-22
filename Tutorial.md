@@ -112,14 +112,54 @@ api/auth/signin => Gives pre-build login page.
 
 Check is to give email name and password and given above in dummy user and it will redirect to the home page
 
-
-
 # 4. Retrieve the session data.
 
 <!-- server side -->
 
+a> All the pages are treated as a server side in next js.
 
+b> Make the component as async AND Import 2 things
 
+import { getServerSession } from "next-auth"
+import { authOptions } from "./api/auth/[...nextauth]/route"
 
+c> With use of getServerSession, get the session.
+const session = await getServerSession(authOptions)
+
+d> <h1>{JSON.stringify(session)}</h1> in return. This will give us the details of user in SSR
 
 <!-- Client side -->
+
+a> Create a client page `User.jsx` in component.
+
+b> app/context/AuthContext.jsx
+
+```js
+"use client";
+
+import { SessionProvider } from "next-auth/react";
+
+export default function Provider({ children }) {
+  return <SessionProvider>{children}</SessionProvider>;
+}
+```
+
+c> In `User.jsx`
+
+```js
+"use client";
+
+import { useSession } from "next-auth/react";
+
+const User = () => {
+  const { data: session } = useSession();
+  return (
+    <div>
+      <h1>Client side render</h1>
+      <h2>{JSON.stringify(session)}</h2>
+    </div>
+  );
+};
+
+export default User;
+```
