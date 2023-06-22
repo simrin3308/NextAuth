@@ -277,3 +277,9 @@ const registerUser = async (e) => {
 At this point if we click on register in front end page, it must say "user registered". User must also be created in the MongoDb also.
 
 
+
+# 8. Front-end login page
+
+we need to same as we did in register page. We will be having a form with submit function. This submit function then can be used to login the user. We need to use the value and useState as we used above but here we need only 2 values. Email and password.
+
+We will not use axios for login because next auth provides us SIGNIN function which can be used to login the user.
