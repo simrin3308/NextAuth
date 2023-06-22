@@ -7,18 +7,19 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
 export default function Login() {
-  const session = useSession()
-    const router = useRouter()
+  const session = useSession();
+  const router = useRouter();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
+
+  console.log(session);
   useEffect(() => {
-    if (session?.status === 'authenticated') {
-       router.push('/dashboard') 
+    if (session?.status === "authenticated") {
+      router.push("/dashboard");
     }
-   
-})
+  });
   const loginUser = async (e) => {
     e.preventDefault();
     signIn("credentials", {
@@ -118,14 +119,14 @@ export default function Login() {
               </button>
             </div>
           </form>
-        
+
           <button
             onClick={() => signIn("github")}
             className="my-4 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
             Sign In with Github
           </button>
-         
+
           <button
             onClick={() => signIn("google")}
             className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

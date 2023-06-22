@@ -375,31 +375,106 @@ export { handler as GET, handler as POST };
 
 npm i react-hot-toast
 app/context/ToasterContext.jsx
-* Create another file in Context
+
+- Create another file in Context
 
 ```js
-'use client'
+"use client";
 
-import { Toaster } from 'react-hot-toast'
+import { Toaster } from "react-hot-toast";
 
 const ToasterContext = () => {
-    return (
-        <div>
-            <Toaster />
-        </div>
-    )
-}
+  return (
+    <div>
+      <Toaster />
+    </div>
+  );
+};
 
 export default ToasterContext;
 ```
 
 Provide in layout file
+
 ```js
- <html lang="en">
-      <body className={inter.className}>
-        <Provider>
-          <ToasterContext />
-          {children}
-        </Provider></body>
-    </html>
+<html lang="en">
+  <body className={inter.className}>
+    <Provider>
+      <ToasterContext />
+      {children}
+    </Provider>
+  </body>
+</html>
+```
+
+# 11.
+
+```js
+const loginUser = async (e) => {
+  e.preventDefault();
+  signIn("credentials", {
+    ...data,
+    redirect: false,
+    // We need to set the redirect false because this will redirect us to the build in signin page.
+
+    // Whenever we use signin function with next auth, it gives us a callback function
+  }).then((callback) => {
+    if (callback?.error) {
+      toast.error(callback.error);
+    }
+
+    // callback.error is whatever we put inside our backend code or checks we did
+    if (callback?.ok && !callback?.error) {
+      toast.success("Logged in successfully!");
+    }
+  });
+};
+```
+
+# 12. Created a dashboard which only admin can see
+
+```js
+"use client";
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
+export default function Dashboard() {
+  const session = useSession();
+  // const { data:session } = useSession()
+  const router = useRouter();
+
+  if (session.status === "unauthenticated") {
+    // Redirect to the login page if user is not authenticated
+    router.push("/login");
+    return null;
+  }
+  if (session.status === "loading") {
+    // Redirect to the login page if user is not authenticated
+
+    return <h1>Loading</h1>;
+  }
+
+  // Render the dashboard content if the user is authenticated
+  return (
+    <div>
+      <h1>Welcome to the Dashboard!</h1>
+      {/* Add your dashboard content here */}
+      <h1>
+        <button onClick={() => signOut()}>sign out</button>
+      </h1>
+    </div>
+  );
+}
+```
+
+# 13. After login send the user to Dashboard
+
+Add in Client login
+
+```js
+useEffect(() => {
+  if (session?.status === "authenticated") {
+    router.push("/dashboard");
+  }
+});
 ```
