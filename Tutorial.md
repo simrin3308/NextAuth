@@ -206,17 +206,18 @@ export async function POST(request) {}
 c> We get the body from it and destructure it
 
 ```js
-const body = request.json()
-    const{name, email, password} = body;
+const body = request.json();
+const { name, email, password } = body;
 ```
 
-d> 
+d>
+
 ```js
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  const body = request.json();
+  const body = await request.json();
   const { name, email, password } = body;
 
   // first we will check if all the fields are filled
@@ -254,6 +255,25 @@ export async function POST(request) {
 
 # 7. Connection between backend and frontend.
 
-a> There is no connection of frontend register with the backend register till now. 
+a> There is no connection of frontend register with the backend register till now.
 
 b> Connection can be created by adding onSubmit function to the FORM. That form creates a post request.
+
+c> npm i axios
+
+d> In function
+
+```js
+const registerUser = async (e) => {
+  e.preventDefault();
+
+  axios
+    .post("api/register", data)
+    .then(() => alert("User has been registered"))
+    .catch(() => alert("Error occurred"));
+};
+```
+
+At this point if we click on register in front end page, it must say "user registered". User must also be created in the MongoDb also.
+
+

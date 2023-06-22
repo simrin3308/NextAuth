@@ -1,8 +1,9 @@
 import prisma from "@/app/libs/prismadb";
 import { NextResponse } from "next/server";
+import bcrypt from "bcrypt";
 
 export async function POST(request) {
-  const body = request.json();
+  const body = await request.json();
   const { name, email, password } = body;
 
   // first we will check if all the fields are filled
