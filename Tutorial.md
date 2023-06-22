@@ -163,3 +163,30 @@ const User = () => {
 
 export default User;
 ```
+
+d> Import this in Home page.
+
+# 5. Register page client side.
+
+a> Create a register page in app with page.jsx
+
+b> Create a form.
+
+c> Get the data from input fields with useState.
+
+`const [data, setData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });`
+
+give onChange to all input fields =>
+`onChange={(e) => setData({ ...data, ${input.name}: e.target.value })}`
+
+d> npm i axios
+
+e> On form onSubmit add => `registerUser`
+
+```js
+
+```
