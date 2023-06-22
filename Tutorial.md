@@ -276,10 +276,97 @@ const registerUser = async (e) => {
 
 At this point if we click on register in front end page, it must say "user registered". User must also be created in the MongoDb also.
 
-
-
 # 8. Front-end login page
 
 we need to same as we did in register page. We will be having a form with submit function. This submit function then can be used to login the user. We need to use the value and useState as we used above but here we need only 2 values. Email and password.
 
 We will not use axios for login because next auth provides us SIGNIN function which can be used to login the user.
+
+# 9. Login backend connect.
+
+a> Login backend code is done in the [...nextauth] file.
+
+b> Earlier in [...nextauth]/route.jsx we created a dummy user. Now we need to add functionality to it.
+
+c> CHECKS
+
+1. If email and password exists
+2. If email exists in the database
+3. If password match
+
+If all the checks passed, we will return the user
+
+```js
+import NextAuth from "next-auth/next";
+import prisma from "../../../libs/prismadb";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import GithubProvider from "next-auth/providers/github";
+import bcrypt from "bcrypt";
+
+export const authOptions = {
+  adapter: PrismaAdapter(prisma),
+  providers: [
+    GithubProvider({
+      clientId: process.env.GITHUB_ID,
+      clientSecret: process.env.GITHUB_SECRET,
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
+    CredentialsProvider({
+      name: "credentials",
+      credentials: {
+        email: { label: "Email", type: "text", placeholder: "Sam@gmail.com" },
+        password: { label: "Password", type: "password" },
+        username: {
+          label: "Username",
+          type: "text",
+          placeholder: "John Smith",
+        },
+      },
+      async authorize(credentials) {
+        // Check to see if email and password is there
+        if (!credentials.email || !credentials.password) {
+          throw new Error("Please enter an Email and Password");
+        }
+
+        // If user actually exists in database
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+
+        // If no user found
+        if (!user || !user?.hashedPassword) {
+          throw new Error("No user Found");
+        }
+
+        // If user found, we need to check the password match. This can be done by bcrypt compare
+        const passwordMatch = await bcrypt.compare(
+          credentials.password,
+          user.hashedPassword
+        );
+
+        // If wrong password
+        if (!passwordMatch) {
+          throw new Error("Password did not match");
+        }
+
+        return user;
+      },
+    }),
+  ],
+  secret: process.env.SECRET,
+  session: {
+    strategy: "jwt",
+  },
+  debug: process.env.NODE_ENV === "development",
+};
+
+const handler = NextAuth(authOptions);
+export { handler as GET, handler as POST };
+```
