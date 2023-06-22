@@ -111,3 +111,15 @@ export { handler as GET, handler as POST };
 api/auth/signin => Gives pre-build login page.
 
 Check is to give email name and password and given above in dummy user and it will redirect to the home page
+
+
+
+# 4. Retrieve the session data.
+
+<!-- server side -->
+
+
+
+
+
+<!-- Client side -->
