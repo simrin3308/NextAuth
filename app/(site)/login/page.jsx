@@ -111,19 +111,19 @@ export default function Login() {
               </button>
             </div>
           </form>
-          <h1>Sign into Github below</h1>
+        
           <button
             onClick={() => signIn("github")}
-            className="bg-black text-white w-full"
+            className="my-4 flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Sign In
+            Sign In with Github
           </button>
-          <h1>Sign into Google below</h1>
+         
           <button
             onClick={() => signIn("google")}
-            className="bg-red-500 text-white w-full"
+            className="flex w-full justify-center rounded-md bg-red-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
           >
-            Sign In
+            Sign In With GOOGLE
           </button>
 
           <p className="mt-10 text-center text-sm text-gray-500">
