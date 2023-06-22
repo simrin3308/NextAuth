@@ -1,7 +1,37 @@
-import React from "react";
+"use client"
+import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const Dashboard = () => {
-  return <div>Dashboard</div>;
-};
+export default function Dashboard() {
+  const session = useSession();
+  const router = useRouter();
 
-export default Dashboard;
+  // if (loading) {
+  //   // Optional: Show a loading state while session is being fetched
+  //   return <div>Loading...</div>;
+  // }
+console.log(session);
+  if (session.status === "unauthenticated") {
+    // Redirect to the login page if user is not authenticated
+    router.push("/login");
+    return null;
+  }
+  if (session.status === "loading") {
+    // Redirect to the login page if user is not authenticated
+   
+    return <h1>Loading</h1>
+  }
+
+  // Render the dashboard content if the user is authenticated
+  return (
+    <div>
+      <h1>Welcome to the Dashboard!</h1>
+      {/* Add your dashboard content here */}
+      <h1>
+        <button onClick={()=>signOut()}>
+          sign out
+        </button>
+      </h1>
+    </div>
+  );
+}

@@ -7,11 +7,18 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
 export default function Login() {
+  const session = useSession()
+    const router = useRouter()
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-
+  useEffect(() => {
+    if (session?.status === 'authenticated') {
+       router.push('/dashboard') 
+    }
+   
+})
   const loginUser = async (e) => {
     e.preventDefault();
     signIn("credentials", {
